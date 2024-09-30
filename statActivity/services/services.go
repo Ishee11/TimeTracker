@@ -19,7 +19,7 @@ func (s *StatisticsService) GetStatistics(startDate, endDate time.Time, activity
 	query := `
 		SELECT type, COUNT(*) as count 
 		FROM activities
-		WHERE created_at >= $1 AND created_at <= $2`
+		WHERE time >= $1 AND time <= $2`
 
 	args := []interface{}{startDate, endDate}
 
