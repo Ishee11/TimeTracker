@@ -1,10 +1,13 @@
 package models
 
+import "time"
+
 // Activity представляет собой модель активности
 type Activity struct {
-	ID        uint    `json:"id" gorm:"primaryKey"` // Уникальный идентификатор активности
-	Type      string  `json:"type"`                 // Тип активности
-	Time      string  `json:"time"`                 // Дата и время активности в формате ISO 8601
-	CreatedAt string  `json:"created_at"`           // Дата и время создания записи
-	Duration  float64 `json:"duration"`             // Продолжительность активности в часах
+	ID        uint      `json:"id"`
+	Type      string    `json:"type"`
+	Time      time.Time `json:"time"` // Изменено на time.Time
+	CreatedAt time.Time `json:"created_at"`
+	Duration  *float64  `json:"duration"` // Указатель для возможности работы с NULL
+	UserID    uint      `json:"user_id"`  // Добавлено поле для связи с пользователем
 }

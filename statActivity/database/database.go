@@ -10,7 +10,8 @@ import (
 
 // Параметры подключения
 var (
-	host     = "localhost"
+	host = "localhost"
+	//host     = "host.docker.internal"
 	port     = 5432
 	user     = "postgres"
 	password = "87363699"        // Замените на свой пароль
@@ -42,5 +43,6 @@ func ConnectDB() (*pgxpool.Pool, error) {
 
 	fmt.Println("Подключение к базе данных PostgreSQL успешно выполнено")
 
-	return nil
+	// Возвращаем соединение и nil (ошибки нет)
+	return connPool, nil
 }
