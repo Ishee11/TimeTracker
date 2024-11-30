@@ -1,0 +1,64 @@
+version: "3.8"
+services:
+  add-activity:
+    build: ./addActivity
+    command:
+      - ./wait-for-postgres.sh
+      - db
+      - ./main
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
+    environment:
+      - DB_PASSWORD=87363699
+      - DB_USER=postgres
+      - DB_NAME=my_time_tracker
+      - DB_PORT=5432
+      - DB_HOST=db
+
+  stat-activity:
+    build: ./statActivity
+    command:
+      - ./wait-for-postgres.sh
+      - db
+      - ./main
+    ports:
+      - 8081:8081
+    depends_on:
+      - db
+    environment:
+      - DB_PASSWORD=87363699
+      - DB_USER=postgres
+      - DB_NAME=my_time_tracker
+      - DB_PORT=5432
+      - DB_HOST=db
+
+  users:
+    build: ./users
+    command:
+      - ./wait-for-postgres.sh
+      - db
+      - ./main
+    ports:
+      - 8082:8082
+    depends_on:
+      - db
+    environment:
+      - DB_PASSWORD=87363699
+      - DB_USER=postgres
+      - DB_NAME=my_time_tracker
+      - DB_PORT=5432
+      - DB_HOST=db
+
+  db:
+    restart: always
+    image: postgres:latest
+    container_name: db
+    volumes:
+      - ./.database/postgres/data:/var/lib/postgres/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      - POSTGRES_PASSWORD=87363699
+    ports:
+      - 5432:5432

@@ -25,5 +25,5 @@ COPY --from=builder /app/main .
 COPY wait-for-postgres.sh /app/wait-for-postgres.sh
 RUN chmod +x /app/wait-for-postgres.sh
 
-EXPOSE 8081
+EXPOSE 8082
 CMD ["/app/wait-for-postgres.sh", "db", "/app/main"]

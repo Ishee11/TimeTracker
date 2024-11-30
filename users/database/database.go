@@ -4,18 +4,38 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"os"
+	"strconv"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 // Параметры подключения
 var (
-	host     = "localhost"
-	port     = 5432
-	user     = "postgres"
-	password = "87363699"        // Замените на свой пароль
-	dbname   = "my_time_tracker" // Имя базы данных
+	//host     = "localhost"
+	host     = getEnv("DB_HOST", "host.docker.internal")
+	port     = getEnvAsInt("DB_PORT", 5432)
+	user     = getEnv("DB_USER", "postgres")
+	password = getEnv("DB_PASSWORD", "87363699")
+	dbname   = getEnv("DB_NAME", "my_time_tracker")
 )
+
+func getEnv(key, defaultValue string) string {
+	if value, exists := os.LookupEnv(key); exists {
+		return value
+	}
+	return defaultValue
+}
+
+// Вспомогательная функция для чтения числовых переменных окружения
+func getEnvAsInt(key string, defaultValue int) int {
+	if valueStr, exists := os.LookupEnv(key); exists {
+		if value, err := strconv.Atoi(valueStr); err == nil {
+			return value
+		}
+	}
+	return defaultValue
+}
 
 // ConnectDB устанавливает соединение с базой данных PostgreSQL
 func ConnectDB() (*pgxpool.Pool, error) {
